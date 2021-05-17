@@ -16,7 +16,7 @@ connection.connect((err)=> {
   console.log('MySQL veritabanına başarıyla bağlanıldı.'); 
 });
 
-bot.login('ODI5NzUwODc3MDU2MjcwNDI2.YG8ruQ.fADmVaZUksSVv038MNXN8iE2qkg')
+bot.login('bot token')
 
 bot.on('ready', async()=>{
   console.log('Bot hazır')
