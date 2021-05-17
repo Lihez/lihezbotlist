@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ERROR</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='icon' href='/images/logo.png' />
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="/"><button class="nav-button">HOME</button></a>
+      <a href="/discord"><button class="nav-button">JOIN DISCORD</button></a>
+    </nav>
+    <section class="error-section">
+        <h1><%= message %></h1>
+        <h2><%= error.status %></h2>
+        <pre><%= error.stack %></pre>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ADDBOT</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='icon' href='/images/logo.png' />
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="/"><button class="nav-button">HOME</button></a>
+      <a href="/discord"><button class="nav-button">JOIN DISCORD</button></a>
+        <a href="/profile"><button class="nav-login"><%= user.username %></button></a>
+    </nav>
+    <section class="index-section">
+            <form id="bot-form" method="POST"> 
+                <input type="hidden" id="ownerID" value="<%= user.id %>">
+                <a class="bot">Bot ID : </a><br/><input type="text" name="botID" id="botID" class="botform" placeholder="Your discord bot ID" required="require"/><br/><br/>
+                <a class="bot">Prefix : </a></br><input type="text" name="prefix" id="prefix" class="botform" placeholder="Your discord bot's prefix" required="require"/><br/><br/>
+                <a class="bot">Short Description : </a><br/><input type="text" name="shortD" id="shortD" maxlength="15" class="botform" placeholder="Your discord bot's short description" required="require"/><br/><br/>
+                <a class="bot">Long Description : </a><br/><textarea type="text" name="longD" id="longD" class="longD" minlength="300" placeholder="Your discord bot's long description" required="require"/></textarea><br/><br/>
+                <a class="bot">Support Server : </a><br/><input type="text" name="supportServer" id="supportServer" class="botform" placeholder="Your discord bot's support server"/><br/><br/>
+                <a class="bot">Website : </a><br/><input type="text" name="website" id="website" class="botform" placeholder="Your discord bot's website"/><br/><br/>
+                <input type="submit" class="submit"/>
+               </form>
+    </section>
+    <script src="http://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script>
+  $('#bot-form').submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+			url:`/addbot`,
+			type:'POST', 
+			data: {
+                 ownerID: document.getElementById("ownerID").value,
+                 botID: document.getElementById("botID").value,
+                 prefix: document.getElementById("prefix").value,
+                 shortD: document.getElementById("shortD").value,
+                 longD: document.getElementById("longD").value,
+                 supportServer: document.getElementById("supportServer").value,
+                 website: document.getElementById("website").value,
+      }
+		});
+  });
+</script>
+  </body>
+</html>
