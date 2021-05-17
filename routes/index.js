@@ -4,10 +4,11 @@ const www = require('../bot');
 const Discord = require('discord.js');
 var body = require('body-parser');
 const request = require('request');
+const token = "bot-token";
+const log = "log-channel-id";
 
 const OAuthClient = require('disco-oauth');
-const client = new OAuthClient('829750877056270426', 'rObGcgUNQMd6P3GzrP48MxSRJpLccWsc');
-
+const client = new OAuthClient('botid', 'bot-secret');
 client.setRedirect('http://localhost:3000/callback');
 client.setScopes('identify','guilds');
 
@@ -101,7 +102,7 @@ router.post('/addbot', async (req, res) => {
     request({
       url: `https://discordapp.com/api/v7/users/${req.body.botID}`,
       headers: {
-      "Authorization": `Bot ODI5NzUwODc3MDU2MjcwNDI2.YG8ruQ.fADmVaZUksSVv038MNXN8iE2qkg`
+      "Authorization": `Bot ${token}`
       },
       }, async(error, response, body) => {
       if (error) return console.log(error)
@@ -113,7 +114,7 @@ router.post('/addbot', async (req, res) => {
     www.connection.query(`INSERT INTO bots (ownerID,botID,botPP,botName,botPrefix,shortD,longD,supportServer,website,premium,vote) values (?,?,?,?,?,?,?,?,?,"normal","0")`, [req.body.ownerID,req.body.botID,`https://cdn.discordapp.com/avatars/${bot.id}/${bot.avatar}.png?size=256`,`${bot.username}#${bot.discriminator}`,req.body.prefix,req.body.shortD,req.body.longD,req.body.supportServer,req.body.website], function (err, result) {
         if (err) console.log(err)
     });
-    www.bot.channels.cache.get('829388327156711475').send(`<@!${bot.id}> adlı bot sıraya eklendi`)
+    www.bot.channels.cache.get(log).send(`<@!${bot.id}> adlı bot sıraya eklendi`)
   }})
 
 }
@@ -134,7 +135,7 @@ router.get('/bot/:botID', async(req,res) => {
   request({
     url: `https://discordapp.com/api/v7/users/${botid}`,
     headers: {
-    "Authorization": `Bot ODI5NzUwODc3MDU2MjcwNDI2.YG8ruQ.fADmVaZUksSVv038MNXN8iE2qkg`
+    "Authorization": `Bot ${token}`
     },
     }, async(error, response, body) => {
     if (error) return console.log(error)
