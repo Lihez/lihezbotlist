@@ -4,11 +4,16 @@ const www = require('../bot');
 const Discord = require('discord.js');
 var body = require('body-parser');
 const request = require('request');
-const token = "bot-token";
-const log = "log-channel-id";
+
+
+var setting = require('../setting.json')
+const token = setting.bot.token;
+const log = setting.bot.log;
+const botid = setting.bot.id;
+const botsecret = setting.bot.secret;
 
 const OAuthClient = require('disco-oauth');
-const client = new OAuthClient('botid', 'bot-secret');
+const client = new OAuthClient(botid, botsecret);
 client.setRedirect('http://localhost:3000/callback');
 client.setScopes('identify','guilds');
 

@@ -1,12 +1,13 @@
 var Discord = require('discord.js')
 var bot = new Discord.Client;
 var mysql = require('mysql')
+var setting = require('./setting.json')
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'botlist'
+  host     : setting.sql.host,
+  user     : setting.sql.user,
+  password : setting.sql.password,
+  database : setting.sql.database
 });
 
 connection.connect((err)=> {
@@ -16,7 +17,7 @@ connection.connect((err)=> {
   console.log('MySQL veritabanına başarıyla bağlanıldı.'); 
 });
 
-bot.login('bot token')
+bot.login(setting.bot.token)
 
 bot.on('ready', async()=>{
   console.log('Bot hazır')
