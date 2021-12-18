@@ -1,0 +1,14 @@
+{
+    "bot":{
+        "token":"ODA4Nzc2MTQ0Nzk0MDI2MDI0.YCLdew.RvYYIC9gFbyhe6XFvNCXMqu4jaU",
+        "secret":"lHwoNLS0LYSo-PsYfOqd7w-3nIAWTag2",
+        "botid":"808776144794026024",
+        "log":"921722590404427806"
+    },
+    "sql": {
+        "host":"localhost",
+        "user":"root",
+        "password":"",
+        "database":"botlist"
+    }
+}
