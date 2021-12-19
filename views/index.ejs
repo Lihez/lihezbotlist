@@ -1,4 +1,31 @@
 <%- include('./partials/header.ejs', {}) %>
+<section class="section mt-5">
+    <div class="container">
+        <h1>Lihez Bot List - Explore Discord Bots</h1>
+        <form action="/search" method="POST">
+            <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control" placeholder="Search Bot Or User">
+                <div class="input-group-prepend">
+                  <button class="input-group-text" id="basic-addon1"><i class="fab fa-searchengin"></i></button>
+                </div>
+                </div>
+        </form>
+        <br/>
+     <hr/>
+    </div>
 
+</section>
+
+<section class="section mt-5">
+    <div class="container">
+        <h2>Popular Bots</h2>
+        <% for(i=0; i < data.length; i++){ %>
+            
+            <% } %>
+        <br/>
+     <hr/>
+    </div>
+
+</section>
 
 <%- include('./partials/footer.ejs', {}) %>

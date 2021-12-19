@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
   host     : setting.sql.host,
   user     : setting.sql.user,
   password : setting.sql.password,
-  database : setting.sql.db
+  database : setting.sql.database
 });
 
 connection.connect((err)=> {

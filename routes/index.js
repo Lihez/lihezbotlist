@@ -4,8 +4,20 @@ var {con} = require('../app')
 var {bot} = require('../bot')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Home - Lihez BotList' });
+router.get('/', async(req, res) => {
+  
+  const veri = await new Promise((resolve, reject) => {
+    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
+        if (err)
+            reject(err);
+        resolve(result);
+    });
+});
+
+  res.render('index', { 
+    title: 'Home - Lihez BotList',
+    data:veri 
+  });
 });
 
 module.exports = router;
