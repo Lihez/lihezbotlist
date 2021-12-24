@@ -1,0 +1,35 @@
+<%- include('./partials/header.ejs', {}) %>
+<section class="section mt-5">
+    <div class="container">
+        <img src="<%= users[0].pp %>" class="rounded-pill card-img" style="float:left" alt="userpp">
+        <h1>&nbsp;<%= users[0].username %></h1>
+        <br/>
+     <hr/>
+    </div>
+</section>
+
+<section class="section mt-5">
+    <div class="container">
+        <h2>User Bots</h2>
+        <div class="row">
+        <% for(i=0; i < bot.length; i++){ %>
+            <% if(bot[i].status == "approved"){ %>
+            <div class="me-5 card bg-dark text-light shadow-lg mt-5" style="width: 18rem;">
+                <a href="/bot/<%= bot[i].botID %>" class="text-decoration-none text-light">
+                <img src="<%= bot[i].botPP %>" class="mx-auto d-block card-img-top rounded-pill card-img mt-2" alt="botpp">
+                <div class="card-body">
+                  <h5 class="card-title mx-auto"><%= bot[i].botName %></h5>
+                  <p class="card-text text-truncate mx-auto"><%= bot[i].shortD %></p>
+                </a>
+                </div>
+              </div>
+              <% } %>
+            <% } %>
+        </div>
+        <br/>
+     <hr/>
+    </div>
+
+</section>
+
+<%- include('./partials/footer.ejs', {}) %>

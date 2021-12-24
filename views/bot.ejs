@@ -1,0 +1,38 @@
+<%- include('./partials/header.ejs', {}) %>
+<section class="section mt-5 pb-5">
+    <div class="container">
+      <img src="<%= data[0].botPP %>" class="rounded-pill shadow-lg" style="float:left; display: block;">
+      <br/><h3>&emsp; <%= data[0].botName %></h3>
+      <p>&emsp;&emsp; Prefix: <%= data[0].botPrefix %></p>
+    </div>
+</section>
+
+<section class="section pt-5" align="center" style="margin-top: 100px;">
+    <div class="container"> 
+        <a href="/profile/<%= data[0].ownerID %>" class="btn btn-dark text-decoration-none col-2">
+        <img src="<%= data[0].ownerPP %>" class="rounded-pill shadow-lg" style="float:left; display: block; width: 50px; height:50px">
+        <p><%= data[0].ownerName %></p>
+    </a>
+    <a href="/vote/<%= data[0].botID %>" class="btn btn-dark text-decoration-none col">
+        <p><%= data[0].vote %> Vote</p>
+    </a>
+    <% if (data[0].website.length > 0){ %> 
+    <a href="<%= data[0].website %>" class="btn btn-dark text-decoration-none col">
+        <p>Website</p>
+    </a>
+    <% } %>
+
+    <% if (data[0].supportServer.length > 0){ %> 
+        <a href="<%= data[0].supportServer %>" class="btn btn-dark text-decoration-none col-2">
+            <p>Support Server</p>
+        </a>
+        <% } %>
+    </div>
+</section>
+
+<section class="section" align="center" style="margin-top: 100px;">
+    <div class="container"> 
+    <%= data[0].longD %>
+    </div>
+</section>
+<%- include('./partials/footer.ejs', {}) %>

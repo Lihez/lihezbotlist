@@ -17,7 +17,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-1">
           <li class="nav-item">
             <a class="nav-link active" href="/terms">Terms</a>
           </li>
@@ -31,6 +31,25 @@
             <a class="nav-link active" href="/cast">Cast</a>
           </li>
         </ul>
+        <div class="navbar-nav ms-auto mb-1">
+          <% if(user == "yok"){ %>
+            <li class="nav-item">
+              <a class="nav-link active" href="<%= login %>">Login</a>
+            </li>
+            <% } else { %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %> ? 'gif' : 'png'"" class="rounded-pill nav-img shadow-lg">
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/profile/<%= user.id %>">Profile</a></li>
+                  <li><a class="dropdown-item" href="/addbot">Add Bot</li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item disabled" href="#">Sertificate Bot</a></li>
+                </ul>
+              </li>
+              <% } %>
+            </div>
       </div>
     </div>
   </nav>

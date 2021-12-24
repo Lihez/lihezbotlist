@@ -1,0 +1,33 @@
+<%- include('./partials/header.ejs', {}) %>
+<section class="section mt-5">
+    <div class="container">
+        <h1>Add Bot</h1>
+        <form method="POST" action="/addbot">
+            <input type="hidden" value="<%= user.id %>" name="ownerid" id="ownerid">
+
+            <label for="botid">Bot ID</label>
+            <input type="text" class="form-control" name="botid" id="botid" required>
+
+            <label for="prefix">Bot Prefix</label>
+            <input type="text" class="form-control" name="prefix" id="prefix" required>
+
+            <label for="shortd">Short Descrition</label>
+            <input type="text" maxlength="50" class="form-control" name="shortd" id="shortd" required>
+
+            <label for="longd">Long Description</label>
+            <textarea name="longd" minlength="200" id="longd" class="form-control" required></textarea>
+            <small class="form-text"> HTML SUPPORTING  </small>
+
+            <label for="website">Website</label>
+            <input type="text" class="form-control" name="website" id="website" required>
+
+            <label for="supportServer">Support Server</label>
+            <input type="text" class="form-control" name="supportServer" id="supportServer" required>
+
+            <input type="submit" class="btn btn-outline-dark col-3">
+        </form>
+    </div>
+
+</section>
+
+<%- include('./partials/footer.ejs', {}) %>
