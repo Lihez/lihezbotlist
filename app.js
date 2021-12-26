@@ -26,6 +26,7 @@ module.exports = {con:connection};
 
 var indexRouter = require('./routes/index');
 var errorRouter = require('./routes/error');
+var adminRouter = require('./routes/admin');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +46,8 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/error', errorRouter);
+app.use('/admin', adminRouter);
+
 app.use(function(req, res, next) {
   next(createError(404));
 });
