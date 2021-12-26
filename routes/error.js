@@ -80,4 +80,105 @@ if (key != '0' && key != null && key != undefined) {
 });
 
 
+router.get('/emptyform', async(req, res) => {
+  var key = req.session.key;
+
+  let loginurl = oauthclient.generateAuthUrl({ //loginurl'i tanımla
+    scope: ["identify", "guilds","email"],
+    state: crypto.randomBytes(16).toString("hex"), 
+  });
+
+  const veri = await new Promise((resolve, reject) => {
+    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
+        if (err)
+            reject(err);
+        resolve(result);
+    });
+});
+
+if (key != '0' && key != null && key != undefined) {
+  let user = await oauthclient.getUser(key);
+  res.render('errors/emptyform', {
+    title: "Error - Lihez BotList",
+    data:veri,
+    user: user
+  })
+  } else{
+    res.render('errors/emptyform', {
+      title: "Error - Lihez BotList",
+      data:veri,
+      login: loginurl,
+      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+    });  
+  }
+});
+
+
+router.get('/botindb', async(req, res) => {
+  var key = req.session.key;
+
+  let loginurl = oauthclient.generateAuthUrl({ //loginurl'i tanımla
+    scope: ["identify", "guilds","email"],
+    state: crypto.randomBytes(16).toString("hex"), 
+  });
+
+  const veri = await new Promise((resolve, reject) => {
+    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
+        if (err)
+            reject(err);
+        resolve(result);
+    });
+});
+
+if (key != '0' && key != null && key != undefined) {
+  let user = await oauthclient.getUser(key);
+  res.render('errors/botindb', {
+    title: "Error - Lihez BotList",
+    data:veri,
+    user: user
+  })
+  } else{
+    res.render('errors/botindb', {
+      title: "Error - Lihez BotList",
+      data:veri,
+      login: loginurl,
+      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+    });  
+  }
+});
+
+router.get('/itisntbot', async(req, res) => {
+  var key = req.session.key;
+
+  let loginurl = oauthclient.generateAuthUrl({ //loginurl'i tanımla
+    scope: ["identify", "guilds","email"],
+    state: crypto.randomBytes(16).toString("hex"), 
+  });
+
+  const veri = await new Promise((resolve, reject) => {
+    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
+        if (err)
+            reject(err);
+        resolve(result);
+    });
+});
+
+if (key != '0' && key != null && key != undefined) {
+  let user = await oauthclient.getUser(key);
+  res.render('errors/itisntbot', {
+    title: "Error - Lihez BotList",
+    data:veri,
+    user: user
+  })
+  } else{
+    res.render('errors/itisntbot', {
+      title: "Error - Lihez BotList",
+      data:veri,
+      login: loginurl,
+      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+    });  
+  }
+});
+
+
 module.exports = router;

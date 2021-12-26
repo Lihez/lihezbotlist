@@ -140,7 +140,7 @@ if(veri.length < 1){
   });
 
   router.post('/addbot', async(req, res) => {
-    if(req.body.ownerid < 1 || req.body.botid < 1 || req.body.prefix < 1 || req.body.shord < 1 || req.body.longd < 1 || req.body.website < 1 || req.body.supportServer < 1){
+    if(req.body.ownerid < 1 || req.body.botid < 1 || req.body.prefix < 1 || req.body.shord < 1 || req.body.longd < 1){
       res.redirect('/error/emptyform')
     }
 
@@ -176,6 +176,7 @@ if(veri.length < 1){
       [request.id, req.body.ownerid,`https://cdn.discordapp.com/avatars/${request.id}/${request.avatar}.png`, `${request.username}#${request.discriminator}`,req.body.prefix, req.body.shortd , req.body.longd , req.body.supportServer,req.body.website,user.username,`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar} ? 'gif' : 'png'`], function (err, result) {
         if (err) console.log(err)
     });
+    bot.channels.cache.get('921722590404427806').send(`<a:yildiz:833702855403372654> <@${req.body.botid}> / **${request.username}#${request.discriminator}** has been added to the queue`)
     res.redirect(`/profile/${req.body.ownerid}`)
       });
      } else{    
@@ -201,6 +202,20 @@ if(veri.length < 1){
           resolve(result);
       });
   });
+
+  request(`https://discord.com/api/v8/users/${id}`,{
+        headers: {
+          Authorization: `Bot ${setting.bot.token}`,
+        }
+    }
+    , async (error, response, body) => {
+          var request = JSON.parse(body);
+          con.query(`UPDATE bots SET botPP = ?, botName = ? WHERE botID = ?`,
+          [`https://cdn.discordapp.com/avatars/${request.id}/${request.avatar}.png`, `${request.username}#${request.discriminator}`, id], function (err, result) {
+            if (err) console.log(err)
+        });
+    })
+        
   
   if (key != '0' && key != null && key != undefined) {
     let user = await oauthclient.getUser(key);
