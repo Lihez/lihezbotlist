@@ -24,7 +24,7 @@ router.get('/', async(req, res) => {
   });
 
   const veri = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE status = ? ORDER BY vote DESC`, ['approved'], function (err, result) {
+    con.query(`SELECT * FROM bots WHERE status = ? ORDER BY vote DESC LIMIT 12`, ['approved'], function (err, result) {
         if (err)
             reject(err);
         resolve(result);
@@ -83,7 +83,7 @@ if(veri.length < 1){
   router.get('/profile/:id', async(req, res) => {
     var key = req.session.key;
     var id = req.params.id
-    let loginurl = oauthclient.generateAuthUrl({ //loginurl'i tanımla
+    let loginurl = oauthclient.generateAuthUrl({ //loginurl'i  tanımla
       scope: ["identify", "guilds","email"],
       state: crypto.randomBytes(16).toString("hex"), 
     });
@@ -202,7 +202,13 @@ if(veri.length < 1){
           resolve(result);
       });
   });
+  if(veri[0] < 1){
+    return res.redirect('/error/botnotfound')
+  }
 
+  if(veri[0].status == "pending"){
+    return res.redirect('/error/botnotfound')
+  }
   request(`https://discord.com/api/v8/users/${id}`,{
         headers: {
           Authorization: `Bot ${setting.bot.token}`,
@@ -233,5 +239,60 @@ if(veri.length < 1){
       });  
     }
   });
+
+
+  router.get('/vote/:id', async(req, res) => {
+    var key = req.session.key;
+
+  if (key != '0' && key != null && key != undefined) {
+    let user = await oauthclient.getUser(key);
+
+    const veri = await new Promise((resolve, reject) => {
+      con.query(`SELECT * FROM vote WHERE username = ?`, [user.id], function (err, result) {
+          if (err)
+              reject(err);
+          resolve(result);
+      });
+  });
+
+  const data = await new Promise((resolve, reject) => {
+    con.query(`SELECT * FROM bots WHERE botID = ?`, [req.params.id], function (err, result) {
+        if (err)
+            reject(err);
+        resolve(result);
+    });
+});
+    
+    var newvote = data[0].vote++;
+    var a = new Date();
+    var date = `${a.getDate()}/${a.getMonth()}/${a.getFullYear()}`;
+    if(veri[0].voteDate > date){
+      return res.redirect('/error/24hours')
+    }
+    if(veri.length < 1){
+    con.query(`INSERT INTO vote(botID,username,voteDate) VALUE(?,?,?,?)`,[req.params.id,user.id,date], function (err, result) {
+      if (err) console.log(err)
+
+      con.query(`UPDATE bots SET vote = ? WHERE botID = ?`,
+      [newvote,req.params.id], function (err, result) {
+        if (err) console.log(err)
+    });
+  });
+}else{
+  con.query(`UPDATE vote SET voteDate = ? WHERE username = ?`,
+  [date,user.id], function (err, result) {
+    if (err) console.log(err)
+});
+
+con.query(`UPDATE bots SET vote = ? WHERE botID = ?`,
+[newvote,req.params.id], function (err, result) {
+  if (err) console.log(err)
+});
+}
+    } else{    
+      return res.redirect('/error/voteerror')
+    }
+  });
+
 
 module.exports = router;

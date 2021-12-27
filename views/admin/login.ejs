@@ -1,0 +1,18 @@
+<%- include('../partials/header.ejs', {}) %>
+<section class="section mt-5">
+    <div class="container">
+        <form action="/admin" method="POST">
+            <label for="username">Kullanıcı Adı</label>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+<br/>       
+            <label for="password">Şifre</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+<br/>       
+            <label for="position">Pozisyon</label>
+            <input type="text" name="position" id="position" class="form-control" placeholder="Position">
+<br/>
+            <input type="submit" value="Giriş" class="btn btn-outline-danger">            
+        </form>
+    </div>
+</section>
+<%- include('../partials/footer.ejs', {}) %>

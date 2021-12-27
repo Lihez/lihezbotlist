@@ -1,0 +1,52 @@
+<%- include('../partials/header.ejs', {}) %>
+<section class="section mt-5 pb-5">
+    <div class="container">
+      <img src="<%= bot[0].botPP %>" class="rounded-pill shadow-lg" style="float:left; display: block;">
+      <br/><h3>&emsp; <%= bot[0].botName %></h3>
+      <p>&emsp;&emsp; Prefix: <%= bot[0].botPrefix %></p>
+    </div>
+</section>
+
+<section class="section pt-5" align="center" style="margin-top: 50px;">
+    <div class="container"> 
+        <a href="/profile/<%= bot[0].ownerID %>" class="btn btn-dark text-decoration-none col-2">
+        <img src="<%= bot[0].ownerPP %>" class="rounded-pill shadow-lg" style="float:left; display: block; width: 50px; height:50px">
+        <p><%= bot[0].ownerName %></p>
+    </a>
+    <a href="/vote/<%= bot[0].botID %>" class="btn btn-dark text-decoration-none col">
+        <p><%= bot[0].vote %> Vote</p>
+    </a>
+    <% if (bot[0].website.length > 0){ %> 
+    <a href="<%= bot[0].website %>" class="btn btn-dark text-decoration-none col">
+        <p>Website</p>
+    </a>
+    <% } %>
+
+    <% if (bot[0].supportServer.length > 0){ %> 
+        <a href="<%= bot[0].supportServer %>" class="btn btn-dark text-decoration-none col-2">
+            <p>Support Server</p>
+        </a>
+        <% } %>
+    </div>
+</section>
+
+<section class="section" align="center" style="margin-top: 100px;">
+    <div class="container"> 
+    <%= bot[0].longD %>
+    </div>
+</section>
+
+<section class="section" align="center" style="margin-top: 200px;">
+    <div class="container"> 
+        <form action="/admin/approvebot" method="POST">
+            <input type="hidden" id="botid" name="botid" value="<%= bot[0].botID %>">
+            <input type="submit" class="btn btn-outline-success" value="Approve Bot">
+        </form><br/><hr/>
+        <form action="/admin/deletebot" method="POST">
+            <input type="hidden" id="botid" name="botid" value="<%= bot[0].botID %>">
+            <input type="submit" class="btn btn-outline-danger" value="Delete Bot">
+        </form>
+    </div>
+</section>
+<br/><br/><br/>
+<%- include('../partials/footer.ejs', {}) %>
