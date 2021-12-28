@@ -71,8 +71,29 @@ if(veri.length < 1){
         con.query(`INSERT INTO users(userid,username,pp,email) VALUE(?,?,?,?)`,[user.id,`${user.username}#${user.discriminator}`,`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar} ? 'gif' : 'png'`,user.email], function (err, result) {
             if (err) console.log(err)
         });
-        res.redirect('/')
+        return res.redirect('/')
       }else{
+        con.query(`UPDATE users SET username = ?, pp = ?, email = ? WHERE userid = ?`,
+        [`${user.username}#${user.discriminator}`,`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar} ? 'gif' : 'png'`,user.email, user.id], function (err, result) {
+          if (err) console.log(err)
+      });
+
+    const bot = await new Promise((resolve, reject) => {
+      con.query(`SELECT * FROM bots WHERE ownerID = ?`, [user.id], function (err, result) {
+          if (err)
+              reject(err);
+          resolve(result);
+      });
+  });      
+
+    if(bot.length < 1){
+    return res.redirect('/')
+    }
+
+      con.query(`UPDATE bots SET ownerName = ?, ownerPP = ? WHERE ownerID = ?`,
+      [`${user.username}#${user.discriminator}`,`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar} ? 'gif' : 'png'`, user.id], function (err, result) {
+        if (err) console.log(err)
+    });
       res.redirect('/')
     }
     } else {
@@ -254,16 +275,18 @@ if(veri.length < 1){
           resolve(result);
       });
   });
-
+  if(veri.length > 0){
+      return res.redirect('/error/12hours')
+  }
   const data = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE botID = ?`, [req.params.id], function (err, result) {
+    con.query(`SELECT * FROM bots WHERE botID = ?`, [req.params.  id], function (err, result) {
         if (err)
             reject(err);
         resolve(result);
     });
 });
     
-    var newvote = data[0].vote++;
+    var newvote = data[0].vote +1;
     var a = new Date();
     var date = `${a.getDate()}/${a.getMonth()}/${a.getFullYear()}`;
     if(veri[0].voteDate > date){
@@ -278,6 +301,7 @@ if(veri.length < 1){
         if (err) console.log(err)
     });
   });
+  res.redirect(`/bot/${req.params.id}`)
 }else{
   con.query(`UPDATE vote SET voteDate = ? WHERE username = ?`,
   [date,user.id], function (err, result) {
@@ -289,6 +313,7 @@ con.query(`UPDATE bots SET vote = ? WHERE botID = ?`,
   if (err) console.log(err)
 });
 }
+  res.redirect(`/bot/${req.params.id}`)
     } else{    
       return res.redirect('/error/voteerror')
     }
