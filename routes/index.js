@@ -287,7 +287,7 @@ if(veri.length < 1){
     var newvote = data[0].vote +1;
     var a = new Date();
     var date = `${a.getDate()}/${a.getMonth()}/${a.getFullYear()}`;
-    if(veri[0].voteDate > date){
+    if(veri[0].voteDate >= date){
       return res.redirect('/error/24hours')
     }
     if(veri.length < 1){
