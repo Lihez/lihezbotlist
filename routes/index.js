@@ -275,9 +275,7 @@ if(veri.length < 1){
           resolve(result);
       });
   });
-  if(veri.length > 0){
-      return res.redirect('/error/12hours')
-  }
+
   const data = await new Promise((resolve, reject) => {
     con.query(`SELECT * FROM bots WHERE botID = ?`, [req.params.  id], function (err, result) {
         if (err)
