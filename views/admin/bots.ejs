@@ -1,0 +1,27 @@
+<%- include('../partials/header.ejs', {}) %>
+<section class="section mt-5">
+    <div class="p-4">
+        <h1>Bots <button class="btn btn-outline-danger"><%= data[0].role %></button></h1>
+        <br/>
+        <div class="row">
+        <% for(i=0; i < bot.length; i++){ %>
+          <div class="ms-1 me-3 card bg-dark text-light shadow-lg mt-2" style="width: 18rem;">
+            <a href="/admin/dashboard/editbot/<%= bot[i].botID %>" class="text-decoration-none text-light">
+            <img src="<%= bot[i].botPP %>" class="display-block card-img-top rounded-pill card-img mt-2" alt="botpp">
+            <p class="mt-5">&emsp;<i class="fas fa-angle-up"></i>  <%= bot[i].vote %></p>
+            <div class="card-body">
+              <h5 class="card-title mx-auto"><%= bot[i].botName %>
+              <% if(bot[i].premium == "certified"){ %>
+                <i class="fas fa-medal" style="color:yellow"></i> 
+              <% } %></h5>
+              <p class="card-text mx-auto"><%= bot[i].shortD %></p><br/>
+              &nbsp;<a href="/admin/dashboard/editbot/<%= bot[i].botID %>" class="btn btn-dark col-5 shadow">View</a>
+              <a href="/invite/<%= bot[i].botID %>" class="btn btn-dark col-5 shadow">Invite</a>
+            </a>
+            </div>
+          </div>
+            <% } %>
+          </div>
+        </div>
+</section>
+<%- include('../partials/footer.ejs', {}) %>

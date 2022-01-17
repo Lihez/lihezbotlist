@@ -9,9 +9,8 @@ var OAuthClient = require('discord-oauth2');
 const oauthclient = new OAuthClient({
   clientId: setting.bot.botid,
   clientSecret: setting.bot.secret,
-  redirectUri: "http://localhost:3000/callback", 
+  redirectUri: "http://www.lihezbl.tk/callback", 
 });
-
 /* GET home page. */
 router.get('/callbackerror', async(req, res) => {
   var key = req.session.key;
@@ -21,30 +20,26 @@ router.get('/callbackerror', async(req, res) => {
     state: crypto.randomBytes(16).toString("hex"), 
   });
 
-  const veri = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
-        if (err)
-            reject(err);
-        resolve(result);
-    });
-});
-
 if (key != '0' && key != null && key != undefined) {
   let user = await oauthclient.getUser(key);
-  res.render('errors/callbackerror', {
+  res.render('errors/errors', {
     title: "Error - Lihez BotList",
-    data:veri,
-    user: user
+    user: user,
+    header: "Callback Code Is Undefined",
+    errorcode: "1"
   })
   } else{
-    res.render('errors/callbackerror', {
+    res.render('errors/errors', {
       title: "Error - Lihez BotList",
-      data:veri,
       login: loginurl,
-      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+      user: "yok",
+      header: "Callback Code Is Undefined",
+      errorcode: "1"
     });  
   }
 });
+
+
 
 router.get('/profileerror', async(req, res) => {
   var key = req.session.key;
@@ -54,27 +49,48 @@ router.get('/profileerror', async(req, res) => {
     state: crypto.randomBytes(16).toString("hex"), 
   });
 
-  const veri = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
-        if (err)
-            reject(err);
-        resolve(result);
-    });
+if (key != '0' && key != null && key != undefined) {
+  let user = await oauthclient.getUser(key);
+  res.render('errors/errors', {
+    title: "Error - Lihez BotList",
+    user: user,
+    header: "We Couldn't Find User",
+    errorcode: "2"
+  })
+  } else{
+    res.render('errors/errors', {
+      title: "Error - Lihez BotList",
+      login: loginurl,
+      user: "yok",
+      header: "We Couldn't Find User",
+      errorcode: "2"
+    });  
+  }
 });
+
+router.get('/loginerror', async(req, res) => {
+  var key = req.session.key;
+
+  let loginurl = oauthclient.generateAuthUrl({ //loginurl'i tanımla
+    scope: ["identify", "guilds","email"],
+    state: crypto.randomBytes(16).toString("hex"), 
+  });
 
 if (key != '0' && key != null && key != undefined) {
   let user = await oauthclient.getUser(key);
-  res.render('errors/profileerror', {
+  res.render('errors/errors', {
     title: "Error - Lihez BotList",
-    data:veri,
-    user: user
+    user: user,
+    header: "Please Log In Site With Discord",
+    errorcode: "3"
   })
   } else{
-    res.render('errors/profileerror', {
+    res.render('errors/errors', {
       title: "Error - Lihez BotList",
-      data:veri,
       login: loginurl,
-      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+      user: "yok",
+      header: "Please Log In Site With Discord",
+      errorcode: "3"
     });  
   }
 });
@@ -88,27 +104,21 @@ router.get('/emptyform', async(req, res) => {
     state: crypto.randomBytes(16).toString("hex"), 
   });
 
-  const veri = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
-        if (err)
-            reject(err);
-        resolve(result);
-    });
-});
-
 if (key != '0' && key != null && key != undefined) {
   let user = await oauthclient.getUser(key);
-  res.render('errors/emptyform', {
+  res.render('errors/errors', {
     title: "Error - Lihez BotList",
-    data:veri,
-    user: user
+    user: user,
+    header: "Please Fill In The Required Fields",
+    errorcode: "4"
   })
   } else{
-    res.render('errors/emptyform', {
+    res.render('errors/errors', {
       title: "Error - Lihez BotList",
-      data:veri,
       login: loginurl,
-      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+      user: "yok",
+      header: "Please Fill In The Required Fields",
+      errorcode: "4"
     });  
   }
 });
@@ -122,27 +132,21 @@ router.get('/botindb', async(req, res) => {
     state: crypto.randomBytes(16).toString("hex"), 
   });
 
-  const veri = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
-        if (err)
-            reject(err);
-        resolve(result);
-    });
-});
-
 if (key != '0' && key != null && key != undefined) {
   let user = await oauthclient.getUser(key);
-  res.render('errors/botindb', {
+  res.render('errors/errors', {
     title: "Error - Lihez BotList",
-    data:veri,
-    user: user
+    user: user,
+    header: "Bot Already Exists",
+    errorcode: "5"
   })
   } else{
-    res.render('errors/botindb', {
+    res.render('errors/errors', {
       title: "Error - Lihez BotList",
-      data:veri,
       login: loginurl,
-      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+      user: "yok",
+      header: "Bot Already Exists",
+      errorcode: "5"
     });  
   }
 });
@@ -155,27 +159,76 @@ router.get('/itisntbot', async(req, res) => {
     state: crypto.randomBytes(16).toString("hex"), 
   });
 
-  const veri = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE status = ?`, ['approved'], function (err, result) {
-        if (err)
-            reject(err);
-        resolve(result);
-    });
+if (key != '0' && key != null && key != undefined) {
+  let user = await oauthclient.getUser(key);
+  res.render('errors/errors', {
+    title: "Error - Lihez BotList",
+    user: user,
+    header: "You Can Only Add Bots",
+    errorcode: "6"
+  })
+  } else{
+    res.render('errors/errors', {
+      title: "Error - Lihez BotList",
+      login: loginurl,
+      user: "yok",
+      header: "You Can Only Add Bots",
+      errorcode: "6"
+    });  
+  }
 });
+
+
+router.get('/botnotfound', async(req, res) => {
+  var key = req.session.key;
+
+  let loginurl = oauthclient.generateAuthUrl({ //loginurl'i tanımla
+    scope: ["identify", "guilds","email"],
+    state: crypto.randomBytes(16).toString("hex"), 
+  });
 
 if (key != '0' && key != null && key != undefined) {
   let user = await oauthclient.getUser(key);
-  res.render('errors/itisntbot', {
+  res.render('errors/errors', {
     title: "Error - Lihez BotList",
-    data:veri,
-    user: user
+    user: user,
+    header: "This Bot Has Not Been Added or Approved",
+    errorcode: "7"
   })
   } else{
-    res.render('errors/itisntbot', {
+    res.render('errors/errors', {
       title: "Error - Lihez BotList",
-      data:veri,
       login: loginurl,
-      user: "yok" //index.ejs'yi ve user diye bir değişken gönder
+      user: "yok",
+      header: "This Bot Has Not Been Added or Approved",
+      errorcode: "7"
+    });  
+  }
+});
+
+router.get('/24hours', async(req, res) => {
+  var key = req.session.key;
+
+  let loginurl = oauthclient.generateAuthUrl({ //loginurl'i tanımla
+    scope: ["identify", "guilds","email"],
+    state: crypto.randomBytes(16).toString("hex"), 
+  });
+
+if (key != '0' && key != null && key != undefined) {
+  let user = await oauthclient.getUser(key);
+  res.render('errors/errors', {
+    title: "Error - Lihez BotList",
+    user: user,
+    header: "You Can Only Vote For 1 Bot Every 12 Hours.",
+    errorcode: "8"
+  })
+  } else{
+    res.render('errors/24hours', {
+      title: "Error - Lihez BotList",
+      login: loginurl,
+      user: "yok",
+      header: "You Can Only Vote For 1 Bot Every 12 Hours.",
+      errorcode: "8"
     });  
   }
 });

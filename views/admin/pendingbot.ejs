@@ -1,7 +1,7 @@
 <%- include('../partials/header.ejs', {}) %>
 <section class="section mt-5">
     <div class="container">
-        <h1>Pending Bots <%= data[0].username %> <button class="btn btn-outline-danger"><%= data[0].position %></button></h1>
+        <h1>Pending Bots <button class="btn btn-outline-danger"><%= data[0].position %></button></h1>
         <br/>
         <div class="row">
         <% for(i=0; i < bot.length; i++){ %>

@@ -1,6 +1,6 @@
 <%- include('./partials/header.ejs', {}) %>
 <section class="section mt-5">
-    <div class="container">
+  <div class="p-4">
         <h1>&nbsp;Lihez Bot List - Explore Discord Bots</h1>
         <form action="/search" method="POST" class="container-fluid">
         <div class="input-group">
@@ -13,17 +13,23 @@
     </div>
 </section>
 
-<section class="section mt-5">
-    <div class="container">
-        <h2>Popular Bots</h2>
+<section class="section">
+    <div class="p-4">
+        <h2>Certified Bots</h2>
         <div class="row">
         <% for(i=0; i < data.length; i++){ %>
-            <div class="me-5 card bg-dark text-light shadow-lg mt-5" style="width: 18rem;">
+            <div class="ms-1 me-3 card bg-dark text-light shadow-lg mt-2" style="width: 18rem;">
                 <a href="/bot/<%= data[i].botID %>" class="text-decoration-none text-light">
-                <img src="<%= data[i].botPP %>" class="mx-auto d-block card-img-top rounded-pill card-img mt-2" alt="botpp">
+                <img src="<%= data[i].botPP %>" class="display-block card-img-top rounded-pill card-img mt-2" alt="botpp">
+                <p class="mt-5">&emsp;<i class="fas fa-angle-up"></i>  <%= data[i].vote %></p>
                 <div class="card-body">
-                  <h5 class="card-title mx-auto"><%= data[i].botName %></h5>
-                  <p class="card-text text-truncate mx-auto"><%= data[i].shortD %></p>
+                  <h5 class="card-title mx-auto"><%= data[i].botName %>
+                  <% if(data[i].premium == "certified"){ %>
+                    <i class="fas fa-medal" style="color:yellow"></i> 
+                  <% } %></h5>
+                  <p class="card-text mx-auto"><%= data[i].shortD %></p><br/>
+                  &nbsp;<a href="/bot/<%= data[i].botID %>" class="btn btn-dark col-5 shadow">View</a>
+                  <a href="/invite/<%= data[i].botID %>" class="btn btn-dark col-5 shadow">Invite</a>
                 </a>
                 </div>
               </div>
@@ -32,6 +38,34 @@
         <br/>
      <hr/>
     </div>
+
+</section>
+
+<section class="section">
+  <div class="p-4">
+      <h2>Most Voted Bots</h2>
+      <div class="row">
+      <% for(i=0; i < voted.length; i++){ %>
+          <div class="ms-1 me-3 card bg-dark text-light shadow-lg mt-2" style="width: 18rem;">
+              <a href="/bot/<%= voted[i].botID %>" class="text-decoration-none text-light">
+              <img src="<%= voted[i].botPP %>" class="display-block card-img-top rounded-pill card-img mt-2" alt="botpp">
+              <p class="mt-5">&emsp;<i class="fas fa-angle-up"></i>  <%= voted[i].vote %></p>
+              <div class="card-body">
+                <h5 class="card-title mx-auto"><%= voted[i].botName %>
+                <% if(voted[i].premium == "certified"){ %>
+                  <i class="fas fa-medal" style="color:yellow"></i> 
+                <% } %></h5>
+                <p class="card-text mx-auto"><%= voted[i].shortD %></p><br/>
+                &nbsp;<a href="/bot/<%= voted[i].botID %>" class="btn btn-dark col-5 shadow">View</a>
+                <a href="/invite/<%= voted[i].botID %>" class="btn btn-dark col-5 shadow">Invite</a>
+              </a>
+              </div>
+            </div>
+          <% } %>
+      </div>
+      <br/>
+   <hr/>
+  </div>
 
 </section>
 

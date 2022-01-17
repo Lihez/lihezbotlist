@@ -1,7 +1,7 @@
 <%- include('../partials/header.ejs', {}) %>
 <section class="section mt-5">
     <div class="container">
-        <h1>Welcome <%= data[0].username %> <button class="btn btn-outline-danger"><%= data[0].position %></button></h1>
+        <h1>Welcome <%= data[0].username %> <button class="btn btn-outline-danger"><%= data[0].role %></button></h1>
         <br/>
         <a href="/admin/dashboard/approvedbot"><button class="btn btn-outline-success">Approved Bot</button></a>&emsp;
         <a href="/admin/dashboard/pendingbot"><button class="btn btn-outline-warning">Pending Bot</button></a>

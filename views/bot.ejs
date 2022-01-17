@@ -16,6 +16,9 @@
     <a href="/vote/<%= data[0].botID %>" class="btn btn-dark text-decoration-none col">
         <p><%= data[0].vote %> Vote</p>
     </a>
+    <a href="/invite/<%= data[0].botID %>" class="btn btn-dark text-decoration-none col-2">
+        <p>Invite Bot</p>
+    </a>
     <% if (data[0].website.length > 0){ %> 
     <a href="<%= data[0].website %>" class="btn btn-dark text-decoration-none col">
         <p>Website</p>

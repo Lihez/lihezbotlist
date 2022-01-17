@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var router = express.Router();
 var {con} = require('../app')
 var {bot} = require('../bot')
@@ -11,7 +11,7 @@ var OAuthClient = require('discord-oauth2');
 const oauthclient = new OAuthClient({
   clientId: setting.bot.botid,
   clientSecret: setting.bot.secret,
-  redirectUri: "http://localhost:3000/callback", 
+  redirectUri: "http://www.lihezbl.tk/callback", 
 });
 
 /* GET home page. */
@@ -24,11 +24,19 @@ router.get('/', async(req, res) => {
   });
 
   const veri = await new Promise((resolve, reject) => {
-    con.query(`SELECT * FROM bots WHERE status = ? ORDER BY vote DESC LIMIT 12`, ['approved'], function (err, result) {
+    con.query(`SELECT * FROM bots WHERE premium = ? LIMIT 12 ORDER BY vote DESC`, ['certified'], function (err, result) {
         if (err)
             reject(err);
         resolve(result);
     });
+});
+
+const voted = await new Promise((resolve, reject) => {
+  con.query(`SELECT * FROM bots WHERE status = ? LIMIT 24 ORDER BY vote DESC`, ['approved'], function (err, result) {
+      if (err)
+          reject(err);
+      resolve(result);
+  });
 });
 
 if (key != '0' && key != null && key != undefined) {
@@ -36,6 +44,7 @@ if (key != '0' && key != null && key != undefined) {
   res.render('index', {
     title: "Home - Lihez BotList",
     data:veri,
+    voted:voted,
     user: user
   })
   } else{
@@ -43,6 +52,7 @@ if (key != '0' && key != null && key != undefined) {
       title: "Home - Lihez BotList",
       data:veri,
       login: loginurl,
+      voted:voted,
       user: "yok" //index.ejs'yi ve user diye bir değişken gönder
     });  
   }
@@ -56,8 +66,8 @@ if (key != '0' && key != null && key != undefined) {
         grantType: "authorization_code",
         scope: ["identify", "guilds", "email"]
       }).catch(console.error);
-      req.session.key = userkey.access_token
-      var key = req.session.key
+      req.session.key = userkey.access_token;
+      var key = req.session.key;
       let user = await oauthclient.getUser(key);
       const veri = await new Promise((resolve, reject) => {
         con.query(`SELECT * FROM users WHERE userid = ?`, [user.id], function (err, result) {
@@ -66,9 +76,8 @@ if (key != '0' && key != null && key != undefined) {
             resolve(result);
         });
     });
-
 if(veri.length < 1){
-        con.query(`INSERT INTO users(userid,username,pp,email) VALUE(?,?,?,?)`,[user.id,`${user.username}#${user.discriminator}`,`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar} ? 'gif' : 'png'`,user.email], function (err, result) {
+        con.query(`INSERT INTO users(userid,username,pp,email,role) VALUE(?,?,?,?,?)`,[user.id,`${user.username}#${user.discriminator}`,`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar} ? 'gif' : 'png'`,user.email,'user'], function (err, result) {
             if (err) console.log(err)
         });
         return res.redirect('/')
@@ -85,7 +94,6 @@ if(veri.length < 1){
           resolve(result);
       });
   });      
-
     if(bot.length < 1){
     return res.redirect('/')
     }
@@ -156,7 +164,7 @@ if(veri.length < 1){
       user: user
     })
     } else{    
-      return res.redirect('/error/addboterror')
+      return res.redirect('/error/loginerror')
     }
   });
 
@@ -275,7 +283,6 @@ if(veri.length < 1){
           resolve(result);
       });
   });
-
   const data = await new Promise((resolve, reject) => {
     con.query(`SELECT * FROM bots WHERE botID = ?`, [req.params.  id], function (err, result) {
         if (err)
@@ -284,14 +291,12 @@ if(veri.length < 1){
     });
 });
     
-    var newvote = data[0].vote +1;
+    var newvote = data[0].vote;
+    newvote++
     var a = new Date();
     var date = `${a.getDate()}/${a.getMonth()}/${a.getFullYear()}`;
-    if(veri[0].voteDate >= date){
-      return res.redirect('/error/24hours')
-    }
     if(veri.length < 1){
-    con.query(`INSERT INTO vote(botID,username,voteDate) VALUE(?,?,?,?)`,[req.params.id,user.id,date], function (err, result) {
+    con.query(`INSERT INTO vote(botID,username,voteDate) VALUE(?,?,?)`,[req.params.id,user.id,date], function (err, result) {
       if (err) console.log(err)
 
       con.query(`UPDATE bots SET vote = ? WHERE botID = ?`,
@@ -301,6 +306,10 @@ if(veri.length < 1){
   });
   res.redirect(`/bot/${req.params.id}`)
 }else{
+      if(veri[0].voteDate >= date){
+      return res.redirect('/error/24hours')
+    }
+
   con.query(`UPDATE vote SET voteDate = ? WHERE username = ?`,
   [date,user.id], function (err, result) {
     if (err) console.log(err)
@@ -313,9 +322,13 @@ con.query(`UPDATE bots SET vote = ? WHERE botID = ?`,
 }
   res.redirect(`/bot/${req.params.id}`)
     } else{    
-      return res.redirect('/error/voteerror')
+      return res.redirect('/error/loginerror')
     }
   });
 
+
+  router.get('/invite/:id', async(req, res) => {
+    res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.params.id}&scope=bot&permissions=0`)
+  });
 
 module.exports = router;

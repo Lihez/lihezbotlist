@@ -22,6 +22,16 @@ connection.connect((err)=> {
   console.log('MySQL veritabanına başarıyla bağlanıldı.'); 
 });
 
+ setInterval(async() => {
+const veri = await new Promise((resolve, reject) => {
+    connection.query(`SELECT * FROM bots`, function (err, result) {
+        if (err)
+            reject(err);
+        resolve(result);
+    });
+});
+  }, 30000)
+
 module.exports = {con:connection};
 
 var indexRouter = require('./routes/index');
@@ -37,6 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.set('trust proxy', 1)
 app.use(session({
   secret: 'xAfeA23rop3mer3onrua3ebgrj3nr42kj3',
@@ -56,7 +67,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'product' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
